@@ -3,6 +3,7 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+import { sendErrorToHealix } from "./utils/healixLogger.js";
 
 const authRoutes = require('./routes/authRoutes');
 const donorRoutes = require('./routes/donorRoutes');
@@ -23,6 +24,52 @@ app.use('/api/donor', donorRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/admin', adminRoutes);
+app.get("/api/test-crash", (req, res, next) => {
+  try {
+    // Deliberate null reference crash
+    const dummy = null;
+    dummy.someMissingFunction();
+  } catch (error) {
+    next(error); // Forwards to the Express error handler
+  }
+});
+
+// GLOBAL EXPRESS ERROR HANDLER for healix
+app.use((err, req, res, next) => {
+  console.error("Unhandled Route Error:", err);
+
+  // Automatically dispatch to Healix
+  sendErrorToHealix({
+    serviceName: "blood-donation-api",
+    err,
+    req,
+    statusCode: err.statusCode || err.status || 500,
+  });
+
+  // Respond to client
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Promise Rejection:", reason);
+  sendErrorToHealix({
+    serviceName: "blood-donation-api",
+    err: reason instanceof Error ? reason : new Error(String(reason)),
+    statusCode: 500,
+  });
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+  sendErrorToHealix({
+    serviceName: "blood-donation-api",
+    err,
+    statusCode: 500,
+  });
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
