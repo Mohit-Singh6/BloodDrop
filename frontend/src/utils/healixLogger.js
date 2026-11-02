@@ -1,5 +1,5 @@
 const HEALIX_WEBHOOK_URL =
-  import.meta.env.VITE_HEALIX_WEBHOOK_URL ||
+  import.meta.env.HEALIX_WEBHOOK_URL ||
   "https://healix.mohits.site/api/incidents/webhook?apiKey=5377ed08-3aa2-4358-bafc-59d2cd4bc147";
 
 export function reportFrontendErrorToHealix({
