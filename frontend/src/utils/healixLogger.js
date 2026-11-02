@@ -26,7 +26,8 @@ export function reportFrontendErrorToHealix({
   try {
     fetch(HEALIX_WEBHOOK_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      mode: "no-cors", // prevents cors issues
+      headers: { "Content-Type": "text/plain" },
       body: JSON.stringify(payload),
     }).catch((err) => {
       console.error("[Healix Frontend Logger] Dispatch failed:", err);
