@@ -1,6 +1,6 @@
 const HEALIX_WEBHOOK_URL =
-  import.meta.env.HEALIX_WEBHOOK_URL ||
-  "https://healix.mohits.site/api/incidents/webhook?apiKey=5377ed08-3aa2-4358-bafc-59d2cd4bc147";
+  process.env.HEALIX_WEBHOOK_URL ||
+  "https://healix.mohits.site/api/incidents/webhook?apiKey=021dd493-eac1-4b56-80f3-a74a633dfbbc";
 
 export function reportFrontendErrorToHealix({
   serviceName = "blood-donation-frontend",
