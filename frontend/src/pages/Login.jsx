@@ -6,10 +6,12 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [recentLogins, setRecentLogins] = useState(null); // Intended to be an array from cache
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -51,6 +53,19 @@ const Login = () => {
         <p className="text-center mt-2" style={{ fontSize: '0.9rem' }}>
           Don't have an account? <Link to="/register" style={{ color: 'var(--primary-color)' }}>Register</Link>
         </p>
+      </div>
+      <div className="form-group">
+        <label>
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          /> Remember this device
+        </label>
+      </div>
+
+      <div className="recent-logins">
+        <p>Previous logins: {recentLogins.length}</p>
       </div>
     </div>
   );
