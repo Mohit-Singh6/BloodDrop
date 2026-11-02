@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { INDIA_STATES_CITIES, STATE_LIST } from '../data/indiaCities';
+import { formatCurrencyDisplay } from "../utils/formatters";
 
 const Register = () => {
+
+  const formattedFee = formatCurrencyDisplay(100, undefined);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
