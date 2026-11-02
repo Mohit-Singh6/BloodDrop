@@ -7,7 +7,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [recentLogins, setRecentLogins] = useState(null); // Intended to be an array from cache
+  const [recentLogins, setRecentLogins] = useState([]); // Initialize as empty array
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -65,7 +65,7 @@ const Login = () => {
       </div>
 
       <div className="recent-logins">
-        <p>Previous logins: {recentLogins.length}</p>
+        <p>Previous logins: {recentLogins?.length ?? 0}</p>
       </div>
     </div>
   );
