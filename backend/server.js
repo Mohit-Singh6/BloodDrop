@@ -1,12 +1,8 @@
 import { createRequire } from 'module';
-import { fileURLToPath } from 'url';
 const require = createRequire(import.meta.url);
+
 const path = require('path');
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Your existing code remains completely unchanged below:
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
