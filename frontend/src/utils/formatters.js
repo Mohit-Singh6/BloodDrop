@@ -7,5 +7,6 @@ export function formatCurrencyDisplay(amount, currencyCode) {
 
   // If currencyCode is undefined, lowercase, or unknown, symbol is undefined
   const symbol = SYMBOL_MAP[currencyCode];
-  return `${symbol.toUpperCase()} ${Number(amount).toFixed(2)}`;
+  const safeSymbol = symbol ? symbol.toUpperCase() : (currencyCode || '$');
+  return `${safeSymbol} ${Number(amount).toFixed(2)}`;
 }
